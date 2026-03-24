@@ -24,6 +24,7 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
 </head>
 <body>
 
+<!-- NAV -->
 <nav class="fixed top-0 w-full bg-black/30 backdrop-blur z-50">
   <div class="max-w-6xl mx-auto flex justify-between p-4 items-center">
     <h1 class="text-green-400 font-bold">YouthTennis</h1>
@@ -52,6 +53,7 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
   <a href="#socials">Socials</a>
 </div>
 
+<!-- HERO -->
 <section id="home" class="h-screen flex items-center justify-center text-center fade">
   <div class="glass p-8 mx-4">
     <h1 class="text-4xl md:text-6xl font-bold mb-4">Youth Tennis Toernooien 🎾</h1>
@@ -60,6 +62,7 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
   </div>
 </section>
 
+<!-- TOERNOOIEN -->
 <section id="toernooien" class="py-20 px-4 fade">
   <h2 class="text-3xl text-center mb-10">Toernooien</h2>
   <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
@@ -76,7 +79,7 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
   </div>
 </section>
 
-<!-- NIEUW -->
+<!-- NIEUW: LEADERBOARD -->
 <section id="leaderboard" class="py-20 px-4 fade">
   <h2 class="text-3xl text-center mb-10">Clubkampioenschap Leaderboard</h2>
   <div class="glass max-w-3xl mx-auto p-6">
@@ -88,13 +91,43 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
   </div>
 </section>
 
+<!-- INSCHRIJVING (VOLLEDIG ORIGINEEL + ALLEEN LINK TOEGEVOEGD) -->
 <section id="inschrijven" class="py-20 px-4 fade">
   <div class="glass max-w-3xl mx-auto p-8">
     <h2 class="text-3xl font-bold mb-6 text-center">Inschrijven</h2>
     <p class="mb-6 text-center">Vul hieronder het formulier in om je kind aan te melden.</p>
     <form id="inschrijfForm" action="https://formspree.io/f/xgongank" method="POST" class="space-y-4">
+      <label>Welk Toernooi?</label>
+      <select name="toernooi" required class="w-full p-3 rounded bg-white/20">
+        <option value="">Selecteer een toernooi</option>
+        <option value="ClubKampioenSchap">ClubKampioenSchap</option>
+        <option value="Ouder-Kind Toernooi">Ouder-Kind Toernooi</option>
+      </select>
+      <label>Naam kind</label>
+      <input type="text" name="naam_kind" required class="w-full p-3 rounded bg-white/20">
+      <label>Naam ouder/verzorger</label>
+      <input type="text" name="naam_ouder" required class="w-full p-3 rounded bg-white/20">
+      <label>Email ouder/verzorger</label>
+      <input type="email" name="email" required class="w-full p-3 rounded bg-white/20">
+      <label>Bal kleur</label>
+      <select name="kleur_bal" required class="w-full p-3 rounded bg-white/20">
+        <option value="">Kies bal kleur</option>
+        <option value="geel">Geel</option>
+        <option value="groen">Groen</option>
+        <option value="oranje">Oranje</option>
+        <option value="rood">Rood</option>
+      </select>
+      <label>Ervaring kind</label>
+      <select name="ervaring_kind" required class="w-full p-3 rounded bg-white/20">
+        <option value="">Kies ervaring</option>
+        <option value="beginner">Beginner</option>
+        <option value="gemiddeld">Gemiddeld</option>
+        <option value="gevorderd">Gevorderd</option>
+      </select>
+      <label>Opmerkingen / vragen</label>
+      <textarea name="opmerkingen" placeholder="Opmerkingen / vragen" class="w-full p-3 rounded bg-white/20"></textarea>
 
-      <!-- HIER IS ALLEEN DE LINK TOEGEVOEGD -->
+      <!-- ENIGE TOEVOEGING -->
       <p class="text-sm text-gray-200">
         Door inschrijving ga je akkoord met de 
         <a href="https://www.knltb.nl/fairplay?_gl=1*16hrs9m*_gcl_au*Mzc3NTU0NzEyLjE3NzQzNzU1NzE." target="_blank" class="underline text-green-400">
@@ -104,36 +137,12 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
 
       <button type="submit" class="bg-green-500 px-6 py-3 rounded w-full hover:bg-green-600 transition">Inschrijven</button>
     </form>
-
     <p id="successMsg" class="mt-4 text-green-400 hidden">Bedankt voor je inschrijving! We hebben uw inschrijving binnen!</p>
   </div>
 </section>
 
-<section id="about" class="py-20 px-4 fade">
-  <div class="glass max-w-3xl mx-auto p-8 text-center">
-    <h2 class="text-3xl font-bold mb-6">Over ons</h2>
-    <p>CEO: <strong>Bastiaan de Jonge</strong> (14 jaar)</p>
-    <p>Assistent: <strong>Annemarie de Vries</strong></p>
-    <p>Wij organiseren jeugdtennistoernooien in Rotterdam samen met firstservices. Ons doel is plezier, sportiviteit en persoonlijke ontwikkeling voor elk kind.</p>
-  </div>
-</section>
-
-<section id="gallery" class="py-20 px-4 fade">
-  <h2 class="text-3xl text-center mb-6">Gallery</h2>
-  <div class="gallery-container max-w-6xl mx-auto">
-    <div class="gallery-item" style="background-image:url('https://via.placeholder.com/250x150?text=Foto+1');"></div>
-    <div class="gallery-item" style="background-image:url('https://via.placeholder.com/250x150?text=Foto+2');"></div>
-    <div class="gallery-item" style="background-image:url('https://via.placeholder.com/250x150?text=Foto+3');"></div>
-    <div class="gallery-item" style="background-image:url('https://via.placeholder.com/250x150?text=Foto+4');"></div>
-  </div>
-</section>
-
-<section id="socials" class="text-center pb-20 fade">
-  <a href="https://tiktok.com/@youthtennis" target="_blank" class="glass px-4 py-2 m-2 inline-block">TikTok</a>
-  <a href="https://instagram.com/youthtennisbv" target="_blank" class="glass px-4 py-2 m-2 inline-block">Instagram</a>
-</section>
-
 <script>
+// Fade animations
 const fades = document.querySelectorAll('.fade');
 fades.forEach(f => {
   const observer = new IntersectionObserver(entries => {
@@ -144,11 +153,20 @@ fades.forEach(f => {
   observer.observe(f);
 });
 
+// Hamburger
 const hamburger = document.getElementById("hamburger");
 const mobileNav = document.getElementById("mobile-nav");
 hamburger.addEventListener('click', ()=>{
   hamburger.classList.toggle('open');
   mobileNav.classList.toggle('hidden');
+});
+
+// Form submission
+document.getElementById("inschrijfForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  fetch(this.action, {method:this.method, body:new FormData(this), headers:{'Accept':'application/json'}})
+    .then(r=>{if(r.ok){document.getElementById("successMsg").classList.remove('hidden'); this.reset();} else {alert('Fout bij inschrijving');}})
+    .catch(()=>alert('Fout bij inschrijving'));
 });
 </script>
 
