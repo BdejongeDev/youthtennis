@@ -20,6 +20,13 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
 .gallery-container::-webkit-scrollbar-thumb {background: rgba(255,255,255,0.3); border-radius:4px;}
 .gallery-item {flex:0 0 auto; width:250px; height:150px; border-radius:15px; background-size:cover; background-position:center; cursor:pointer; transition: transform 0.3s;}
 .gallery-item:hover {transform: scale(1.05);}
+
+@media (min-width: 768px){
+  select {
+    background: white !important;
+    color: black !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -66,16 +73,19 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
 <section id="toernooien" class="py-20 px-4 fade">
   <h2 class="text-3xl text-center mb-10">Toernooien</h2>
   <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+    
     <a href="#inschrijven" class="glass p-6 cursor-pointer fade hover:bg-white/20 transition block">
       <h3 class="text-xl font-bold">ClubKampioenSchap</h3>
-      <p>📅 15 juli | 📍 TC-Schiebroek</p>
+      <p>📅 TDB | 📍 TC-Schiebroek</p>
       <p class="mt-2 text-sm text-gray-200">Voor kinderen van 4-17 jaar. Leer nieuwe technieken, maak vrienden en beleef een dag vol sportiviteit en plezier! (ben je eerste, tweede, derde of vierde geworden? Dan sta je binnen 24 uur op het leaderboard op de site!)</p>
     </a>
+
     <a href="#inschrijven" class="glass p-6 cursor-pointer fade hover:bg-white/20 transition block">
       <h3 class="text-xl font-bold">Ouder-Kind Toernooi</h3>
-      <p>📅 20 augustus | 📍 TC-Schiebroek</p>
+      <p>📅 14 mei | 📍 TC-Schiebroek</p>
       <p class="mt-2 text-sm text-gray-200">Breng een onvergetelijke dag door met je ouder/verzorger. Iedereen kan meedoen, beginner of gevorderd!</p>
     </a>
+
   </div>
 </section>
 
@@ -84,9 +94,9 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
   <h2 class="text-3xl text-center mb-10">Clubkampioenschap Leaderboard</h2>
   <div class="glass max-w-3xl mx-auto p-6">
     <ol class="space-y-2 text-lg">
-      <li>🥇 Nog leeg</li>
-      <li>🥈 Nog leeg</li>
-      <li>🥉 Nog leeg</li>
+      <li>🥇 Bastiaan de Jonge</li>
+      <li>🥈 Hannes Martens</li>
+      <li>🥉 Storm van der Spek</li>
     </ol>
   </div>
 </section>
@@ -100,15 +110,18 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
       <label>Welk Toernooi?</label>
       <select name="toernooi" required class="w-full p-3 rounded bg-white/20">
         <option value="">Selecteer een toernooi</option>
-        <option value="ClubKampioenSchap">ClubKampioenSchap</option>
         <option value="Ouder-Kind Toernooi">Ouder-Kind Toernooi</option>
       </select>
+
       <label>Naam kind</label>
       <input type="text" name="naam_kind" required class="w-full p-3 rounded bg-white/20">
+
       <label>Naam ouder/verzorger</label>
       <input type="text" name="naam_ouder" required class="w-full p-3 rounded bg-white/20">
+
       <label>Email ouder/verzorger</label>
       <input type="email" name="email" required class="w-full p-3 rounded bg-white/20">
+
       <label>Bal kleur</label>
       <select name="kleur_bal" required class="w-full p-3 rounded bg-white/20">
         <option value="">Kies bal kleur</option>
@@ -117,6 +130,7 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
         <option value="oranje">Oranje</option>
         <option value="rood">Rood</option>
       </select>
+
       <label>Ervaring kind</label>
       <select name="ervaring_kind" required class="w-full p-3 rounded bg-white/20">
         <option value="">Kies ervaring</option>
@@ -124,12 +138,13 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
         <option value="gemiddeld">Gemiddeld</option>
         <option value="gevorderd">Gevorderd</option>
       </select>
+
       <label>Opmerkingen / vragen</label>
       <textarea name="opmerkingen" placeholder="Opmerkingen / vragen" class="w-full p-3 rounded bg-white/20"></textarea>
 
       <p class="text-sm text-gray-200">
         Door inschrijving ga je akkoord met de 
-        <a href="https://www.knltb.nl/fairplay?_gl=1*16hrs9m*_gcl_au*Mzc3NTU0NzEyLjE3NzQzNzU1NzE." target="_blank" class="underline text-green-400">
+        <a href="https://www.knltb.nl/fairplay" target="_blank" class="underline text-green-400">
           toernooi regels
         </a>.
       </p>
@@ -146,6 +161,7 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
     <h2 class="text-3xl font-bold mb-6">Over ons</h2>
     <p>CEO: <strong>Bastiaan de Jonge</strong> (14 jaar)</p>
     <p>Assistent: <strong>Annemarie de Vries</strong></p>
+    <p>Assistent: <strong>Hannes Martens</strong></p>
     <p>Wij organiseren jeugdtennistoernooien in Rotterdam samen met firstservices. Ons doel is plezier, sportiviteit en persoonlijke ontwikkeling voor elk kind. Met uitdagende wedstrijden, mooie prijzen en een gezellige sfeer zorgen we dat iedereen zich welkom voelt.</p>
     <p>Van beginners tot gevorderden: iedereen beleeft een onvergetelijke ervaring en leert nieuwe vaardigheden. Samen groeien, lachen en plezier maken staan centraal bij YouthTennis.</p>
   </div>
@@ -169,7 +185,6 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
 </section>
 
 <script>
-// Fade animations
 const fades = document.querySelectorAll('.fade');
 fades.forEach(f => {
   const observer = new IntersectionObserver(entries => {
@@ -180,7 +195,6 @@ fades.forEach(f => {
   observer.observe(f);
 });
 
-// Hamburger
 const hamburger = document.getElementById("hamburger");
 const mobileNav = document.getElementById("mobile-nav");
 hamburger.addEventListener('click', ()=>{
@@ -188,7 +202,6 @@ hamburger.addEventListener('click', ()=>{
   mobileNav.classList.toggle('hidden');
 });
 
-// Form submission
 document.getElementById("inschrijfForm").addEventListener("submit", function(e){
   e.preventDefault();
   fetch(this.action, {method:this.method, body:new FormData(this), headers:{'Accept':'application/json'}})
@@ -199,3 +212,4 @@ document.getElementById("inschrijfForm").addEventListener("submit", function(e){
 
 </body>
 </html>
+
