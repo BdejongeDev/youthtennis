@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YouthTennis.nl</title>
+<link rel="icon" href="logo.png" type="image/png">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-family:sans-serif; scroll-behavior: smooth;}
@@ -34,7 +35,10 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
 <!-- NAV -->
 <nav class="fixed top-0 w-full bg-black/30 backdrop-blur z-50">
   <div class="max-w-6xl mx-auto flex justify-between p-4 items-center">
-    <h1 class="text-green-400 font-bold">YouthTennis</h1>
+    <h1 class="text-green-400 font-bold flex items-center gap-2">
+      <img src="logo.png" alt="YouthTennis Logo" class="w-8 h-8">
+      YouthTennis
+    </h1>
     <div class="md:hidden">
       <div id="hamburger" class="hamburger"><span></span><span></span><span></span></div>
     </div>
@@ -212,4 +216,3 @@ document.getElementById("inschrijfForm").addEventListener("submit", function(e){
 
 </body>
 </html>
-
