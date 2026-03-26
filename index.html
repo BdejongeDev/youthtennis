@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>YouthTennis.nl</title>
-<link rel="icon" href="logo1.png" type="image/png">
+<link rel="icon" href="logo.png" type="image/png">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-family:sans-serif; scroll-behavior: smooth;}
@@ -206,6 +206,14 @@ hamburger.addEventListener('click', ()=>{
   mobileNav.classList.toggle('hidden');
 });
 
+// Hamburger sluit na klikken op link
+mobileNav.querySelectorAll('a').forEach(link=>{
+  link.addEventListener('click', ()=>{
+    hamburger.classList.remove('open');
+    mobileNav.classList.add('hidden');
+  });
+});
+
 // Form
 document.getElementById("inschrijfForm").addEventListener("submit", function(e){
   e.preventDefault();
@@ -235,11 +243,11 @@ nextBtn.addEventListener('click', ()=>{
   updateCarousel();
 });
 
-// Auto-scroll
+// Auto-scroll 6 sec
 setInterval(()=>{
   index = (index + 1) % items.length;
   updateCarousel();
-},4000);
+},6000);
 </script>
 
 </body>
