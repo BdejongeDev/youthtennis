@@ -16,18 +16,16 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
 .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
 .hamburger.open span:nth-child(2){opacity:0;}
 .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
-.gallery-container {display:flex; overflow-x:auto; gap:1rem; padding-bottom:1rem;}
-.gallery-container::-webkit-scrollbar {height:8px;}
-.gallery-container::-webkit-scrollbar-thumb {background: rgba(255,255,255,0.3); border-radius:4px;}
-.gallery-item {flex:0 0 auto; width:250px; height:150px; border-radius:15px; background-size:cover; background-position:center; cursor:pointer; transition: transform 0.3s;}
-.gallery-item:hover {transform: scale(1.05);}
 
-@media (min-width: 768px){
-  select {
-    background: white !important;
-    color: black !important;
-  }
-}
+select {background: white !important; color: black !important;}
+
+.carousel-container {position: relative; max-width: 800px; margin: auto; overflow: hidden; border-radius:15px;}
+.carousel-track {display: flex; transition: transform 0.5s ease-in-out;}
+.carousel-item {min-width: 100%; background-size: cover; background-position: center; height: 400px;}
+.carousel-btn {position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.3); border:none; color:white; font-size:2rem; padding:0.5rem 1rem; cursor:pointer; border-radius:10px;}
+.carousel-btn:hover {background: rgba(0,0,0,0.6);}
+.prev {left:10px;}
+.next {right:10px;}
 </style>
 </head>
 <body>
@@ -171,11 +169,14 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
 <!-- GALLERY -->
 <section id="gallery" class="py-20 px-4 fade">
   <h2 class="text-3xl text-center mb-6">Gallery</h2>
-  <div class="gallery-container max-w-6xl mx-auto">
-    <div class="gallery-item" style="background-image:url('https://via.placeholder.com/250x150?text=Foto+1');"></div>
-    <div class="gallery-item" style="background-image:url('https://via.placeholder.com/250x150?text=Foto+2');"></div>
-    <div class="gallery-item" style="background-image:url('https://via.placeholder.com/250x150?text=Foto+3');"></div>
-    <div class="gallery-item" style="background-image:url('https://via.placeholder.com/250x150?text=Foto+4');"></div>
+  <div class="carousel-container">
+    <div class="carousel-track">
+      <div class="carousel-item" style="background-image:url('bastiaantennis.jpeg');"></div>
+      <div class="carousel-item" style="background-image:url('tcschiebroek-fotografie-joiadejong-zomer2023-dsc07574.1920x0.jpg');"></div>
+      <div class="carousel-item" style="background-image:url('302698842-478854587585221-3277004371031298767-n.960x0.jpg');"></div>
+    </div>
+    <button class="carousel-btn prev">&#10094;</button>
+    <button class="carousel-btn next">&#10095;</button>
   </div>
 </section>
 
@@ -186,6 +187,7 @@ body {background: linear-gradient(135deg,#0f172a,#065f46); color:white; font-fam
 </section>
 
 <script>
+// Fade
 const fades = document.querySelectorAll('.fade');
 fades.forEach(f => {
   const observer = new IntersectionObserver(entries => {
@@ -196,6 +198,7 @@ fades.forEach(f => {
   observer.observe(f);
 });
 
+// Hamburger
 const hamburger = document.getElementById("hamburger");
 const mobileNav = document.getElementById("mobile-nav");
 hamburger.addEventListener('click', ()=>{
@@ -203,12 +206,40 @@ hamburger.addEventListener('click', ()=>{
   mobileNav.classList.toggle('hidden');
 });
 
+// Form
 document.getElementById("inschrijfForm").addEventListener("submit", function(e){
   e.preventDefault();
   fetch(this.action, {method:this.method, body:new FormData(this), headers:{'Accept':'application/json'}})
     .then(r=>{if(r.ok){document.getElementById("successMsg").classList.remove('hidden'); this.reset();} else {alert('Fout bij inschrijving');}})
     .catch(()=>alert('Fout bij inschrijving'));
 });
+
+// Carousel
+const track = document.querySelector('.carousel-track');
+const items = Array.from(track.children);
+const prevBtn = document.querySelector('.carousel-btn.prev');
+const nextBtn = document.querySelector('.carousel-btn.next');
+let index = 0;
+
+function updateCarousel() {
+  track.style.transform = `translateX(-${index * 100}%)`;
+}
+
+prevBtn.addEventListener('click', ()=>{
+  index = (index - 1 + items.length) % items.length;
+  updateCarousel();
+});
+
+nextBtn.addEventListener('click', ()=>{
+  index = (index + 1) % items.length;
+  updateCarousel();
+});
+
+// Auto-scroll
+setInterval(()=>{
+  index = (index + 1) % items.length;
+  updateCarousel();
+},4000);
 </script>
 
 </body>
