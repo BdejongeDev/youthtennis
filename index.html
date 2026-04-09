@@ -340,12 +340,27 @@
 
   <script>
     (function () {
-      var targetDate = new Date(Date.now() + 12 * 24 * 60 * 60 * 1000);
+      var TARGET_KEY = 'coming-soon-target-date';
+      var savedTarget = localStorage.getItem(TARGET_KEY);
+
+      var targetDate;
+
+      if (savedTarget) {
+        targetDate = new Date(savedTarget);
+      } else {
+        targetDate = new Date(Date.now() + 12 * 24 * 60 * 60 * 1000);
+        localStorage.setItem(TARGET_KEY, targetDate.toISOString());
+      }
+      var STORAGE_KEY = 'coming-soon-email-submitted';
 
       var daysEl = document.getElementById('days');
       var hoursEl = document.getElementById('hours');
       var minutesEl = document.getElementById('minutes');
       var secondsEl = document.getElementById('seconds');
+      var form = document.getElementById('notify-form');
+      var emailInput = document.getElementById('email');
+      var submitButton = document.getElementById('submit-button');
+      var formMessage = document.getElementById('form-message');
 
       function pad(value) {
         return String(value).padStart(2, '0');
@@ -374,16 +389,30 @@
         secondsEl.textContent = pad(seconds);
       }
 
+      function lockForm(message) {
+        emailInput.disabled = true;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Already Registered';
+        formMessage.textContent = message;
+        formMessage.className = 'message';
+        formMessage.style.display = 'block';
+      }
+
       updateCountdown();
       setInterval(updateCountdown, 1000);
 
-      var form = document.getElementById('notify-form');
-      var emailInput = document.getElementById('email');
-      var submitButton = document.getElementById('submit-button');
-      var formMessage = document.getElementById('form-message');
+      if (localStorage.getItem(STORAGE_KEY) === 'true') {
+        lockForm('This browser has already submitted an email address.');
+        return;
+      }
 
       form.addEventListener('submit', function (event) {
         event.preventDefault();
+
+        if (localStorage.getItem(STORAGE_KEY) === 'true') {
+          lockForm('This browser has already submitted an email address.');
+          return;
+        }
 
         submitButton.disabled = true;
         submitButton.textContent = 'Submitting...';
@@ -407,23 +436,25 @@
           })
           .then(function (result) {
             if (result.ok) {
-              formMessage.textContent = 'Thanks! You are on the list.';
+              localStorage.setItem(STORAGE_KEY, 'true');
+              formMessage.textContent = 'Thanks! You are on the list. This browser cannot submit again.';
               formMessage.style.display = 'block';
               emailInput.value = '';
+              lockForm('Thanks! You are on the list. This browser cannot submit again.');
             } else {
               formMessage.textContent = (result.data && result.data.errors && result.data.errors[0] && result.data.errors[0].message)
                 ? result.data.errors[0].message
                 : 'Something went wrong. Please try again.';
               formMessage.className = 'message error';
               formMessage.style.display = 'block';
+              submitButton.disabled = false;
+              submitButton.textContent = 'Notify Me';
             }
           })
           .catch(function () {
             formMessage.textContent = 'Network error. Please try again.';
             formMessage.className = 'message error';
             formMessage.style.display = 'block';
-          })
-          .finally(function () {
             submitButton.disabled = false;
             submitButton.textContent = 'Notify Me';
           });
