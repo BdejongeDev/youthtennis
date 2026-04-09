@@ -1,142 +1,442 @@
-import { useState } from "react";
-
-export default function ComingSoonPage() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("idle");
-  const [message, setMessage] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("loading");
-    setMessage("");
-
-    try {
-      const response = await fetch("https://formspree.io/f/xgongank", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setStatus("success");
-        setMessage("Thanks! You’re on the list.");
-        setEmail("");
-      } else {
-        setStatus("error");
-        setMessage(data?.errors?.[0]?.message || "Something went wrong. Please try again.");
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coming Soon</title>
+    <style>
+      * {
+        box-sizing: border-box;
       }
-    } catch {
-      setStatus("error");
-      setMessage("Network error. Please try again.");
-    }
-  };
 
-  return (
-    <div className="min-h-screen bg-neutral-950 text-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(168,85,247,0.2),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.18),transparent_35%)]" />
+      body {
+        margin: 0;
+        font-family: Inter, Arial, sans-serif;
+        background: #0a0a0a;
+        color: #ffffff;
+        min-height: 100vh;
+        overflow: hidden;
+      }
 
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-6 py-12">
-        <div className="w-full max-w-5xl rounded-[32px] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
-          <div className="grid lg:grid-cols-2">
-            <div className="p-8 sm:p-12 lg:p-14 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10">
-              <div>
-                <div className="inline-flex items-center rounded-full border border-white/15 bg-white/8 px-4 py-1.5 text-sm tracking-[0.2em] uppercase text-white/70">
-                  Coming Soon
-                </div>
+      .background {
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(circle at top right, rgba(168, 85, 247, 0.2), transparent 30%),
+          radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.18), transparent 35%),
+          #0a0a0a;
+        z-index: 0;
+      }
 
-                <h1 className="mt-8 text-5xl sm:text-6xl font-semibold leading-tight tracking-tight">
-                  Something beautiful
-                  <span className="block bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
-                    is on the way.
-                  </span>
-                </h1>
+      .wrapper {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
 
-                <p className="mt-6 max-w-xl text-base sm:text-lg leading-8 text-white/70">
-                  We’re building something fresh, elegant, and seriously exciting behind the scenes. Stay tuned — launch is closer than you think.
-                </p>
-              </div>
+      .card {
+        width: 100%;
+        max-width: 1120px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border-radius: 32px;
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+      }
 
-              <div className="mt-10 grid grid-cols-3 gap-4">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <p className="text-2xl font-semibold">01</p>
-                  <p className="mt-2 text-sm text-white/60">Clean design</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <p className="text-2xl font-semibold">02</p>
-                  <p className="mt-2 text-sm text-white/60">Fast experience</p>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                  <p className="text-2xl font-semibold">03</p>
-                  <p className="mt-2 text-sm text-white/60">Launching soon</p>
-                </div>
-              </div>
+      .grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+
+      .left,
+      .right {
+        padding: 56px;
+      }
+
+      .left {
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 16px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.08);
+        font-size: 13px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.75);
+      }
+
+      h1 {
+        margin: 28px 0 0;
+        font-size: 64px;
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      .gradient-text {
+        display: block;
+        background: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0.6));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .description {
+        margin-top: 24px;
+        max-width: 560px;
+        font-size: 18px;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .features {
+        margin-top: 40px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .feature,
+      .countdown-item,
+      .message,
+      .panel {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
+      }
+
+      .feature {
+        padding: 18px;
+      }
+
+      .feature strong {
+        display: block;
+        font-size: 28px;
+      }
+
+      .feature span {
+        display: block;
+        margin-top: 10px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .panel {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 32px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      }
+
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      .countdown {
+        margin-top: 28px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        text-align: center;
+      }
+
+      .countdown-item {
+        padding: 18px 12px;
+      }
+
+      .countdown-value {
+        font-size: 34px;
+        font-weight: 700;
+      }
+
+      .countdown-label {
+        margin-top: 6px;
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.45);
+      }
+
+      form {
+        margin-top: 28px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      input {
+        width: 100%;
+        padding: 16px 18px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        color: #ffffff;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s ease;
+      }
+
+      input::placeholder {
+        color: rgba(255, 255, 255, 0.35);
+      }
+
+      input:focus {
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      button {
+        width: 100%;
+        margin-top: 14px;
+        padding: 16px 18px;
+        border: 0;
+        border-radius: 18px;
+        background: #ffffff;
+        color: #000000;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+      }
+
+      button:hover {
+        transform: scale(1.01);
+      }
+
+      button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      .message {
+        margin-top: 16px;
+        padding: 14px 16px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      .message.error {
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      @media (max-width: 960px) {
+        body {
+          overflow: auto;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .left {
+          border-right: 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .left,
+        .right {
+          padding: 32px;
+        }
+
+        h1 {
+          font-size: 46px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .features,
+        .countdown {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        h1 {
+          font-size: 38px;
+        }
+
+        .description {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background"></div>
+
+    <div class="wrapper">
+      <div class="card">
+        <div class="grid">
+          <section class="left">
+            <div>
+              <div class="badge">Coming Soon</div>
+
+              <h1>
+                Something beautiful
+                <span class="gradient-text">is on the way.</span>
+              </h1>
+
+              <p class="description">
+                We’re building something fresh, elegant, and seriously exciting behind the scenes.
+                Stay tuned — launch is closer than you think.
+              </p>
             </div>
 
-            <div className="p-8 sm:p-12 lg:p-14 flex flex-col justify-center">
-              <div className="rounded-[28px] border border-white/10 bg-black/30 p-8 shadow-xl">
-                <p className="text-sm uppercase tracking-[0.3em] text-white/45">Stay in the loop</p>
-
-                <div className="mt-8 grid grid-cols-4 gap-3 text-center">
-                  {[
-                    { value: '12', label: 'Days' },
-                    { value: '08', label: 'Hours' },
-                    { value: '24', label: 'Min' },
-                    { value: '51', label: 'Sec' },
-                  ].map((item) => (
-                    <div key={item.label} className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                      <div className="text-2xl sm:text-3xl font-semibold">{item.value}</div>
-                      <div className="mt-1 text-xs uppercase tracking-widest text-white/45">{item.label}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-                  <div>
-                    <label htmlFor="email" className="mb-2 block text-sm text-white/60">
-                      Get notified when we launch
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      name="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      placeholder="Enter your email"
-                      className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-white placeholder:text-white/35 outline-none transition focus:border-white/30"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={status === "loading"}
-                    className="w-full rounded-2xl bg-white px-5 py-4 text-sm font-medium text-black transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-70"
-                  >
-                    {status === "loading" ? "Submitting..." : "Notify Me"}
-                  </button>
-                </form>
-
-                {message && (
-                  <div
-                    className={`mt-4 rounded-2xl border px-4 py-3 text-sm ${
-                      status === "success"
-                        ? "border-white/20 bg-white/10 text-white"
-                        : "border-white/10 bg-white/5 text-white/75"
-                    }`}
-                  >
-                    {message}
-                  </div>
-                )}
+            <div class="features">
+              <div class="feature">
+                <strong>01</strong>
+                <span>Clean design</span>
+              </div>
+              <div class="feature">
+                <strong>02</strong>
+                <span>Fast experience</span>
+              </div>
+              <div class="feature">
+                <strong>03</strong>
+                <span>Launching soon</span>
               </div>
             </div>
-          </div>
+          </section>
+
+          <section class="right">
+            <div class="panel">
+              <div class="eyebrow">Stay in the loop</div>
+
+              <div class="countdown">
+                <div class="countdown-item">
+                  <div class="countdown-value" id="days">00</div>
+                  <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-item">
+                  <div class="countdown-value" id="hours">00</div>
+                  <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-item">
+                  <div class="countdown-value" id="minutes">00</div>
+                  <div class="countdown-label">Min</div>
+                </div>
+                <div class="countdown-item">
+                  <div class="countdown-value" id="seconds">00</div>
+                  <div class="countdown-label">Sec</div>
+                </div>
+              </div>
+
+              <form id="notify-form">
+                <label for="email">Get notified when we launch</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  required
+                />
+                <button type="submit" id="submit-button">Notify Me</button>
+              </form>
+
+              <div id="form-message" class="message" style="display: none;"></div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
-  );
-}
+
+    <script>
+      const launchDate = new Date();
+      launchDate.setDate(launchDate.getDate() + 12);
+      launchDate.setHours(18, 0, 0, 0);
+
+      const daysEl = document.getElementById('days');
+      const hoursEl = document.getElementById('hours');
+      const minutesEl = document.getElementById('minutes');
+      const secondsEl = document.getElementById('seconds');
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = launchDate.getTime() - now;
+
+        if (distance <= 0) {
+          daysEl.textContent = '00';
+          hoursEl.textContent = '00';
+          minutesEl.textContent = '00';
+          secondsEl.textContent = '00';
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        daysEl.textContent = String(days).padStart(2, '0');
+        hoursEl.textContent = String(hours).padStart(2, '0');
+        minutesEl.textContent = String(minutes).padStart(2, '0');
+        secondsEl.textContent = String(seconds).padStart(2, '0');
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      const form = document.getElementById('notify-form');
+      const emailInput = document.getElementById('email');
+      const submitButton = document.getElementById('submit-button');
+      const formMessage = document.getElementById('form-message');
+
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
+        formMessage.style.display = 'none';
+        formMessage.className = 'message';
+
+        try {
+          const response = await fetch('https://formspree.io/f/xgongank', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({ email: emailInput.value })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            formMessage.textContent = 'Thanks! You’re on the list.';
+            formMessage.style.display = 'block';
+            emailInput.value = '';
+          } else {
+            formMessage.textContent = (data.errors && data.errors[0] && data.errors[0].message)
+              ? data.errors[0].message
+              : 'Something went wrong. Please try again.';
+            formMessage.className = 'message error';
+            formMessage.style.display = 'block';
+          }
+        } catch (error) {
+          formMessage.textContent = 'Network error. Please try again.';
+          formMessage.className = 'message error';
+          formMessage.style.display = 'block';
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Notify Me';
+        }
+      });
+    </script>
+  </body>
+</html>
